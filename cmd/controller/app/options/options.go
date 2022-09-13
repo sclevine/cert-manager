@@ -107,6 +107,7 @@ type ControllerOptions struct {
 	EnablePprof bool
 
 	DNS01CheckRetryPeriod time.Duration
+	DNS01PropagationTime  time.Duration
 
 	// Annotations copied Certificate -> CertificateRequest,
 	// CertificateRequest -> Order. Slice of string literals that are
@@ -138,6 +139,7 @@ const (
 	defaultPrometheusMetricsServerAddress = "0.0.0.0:9402"
 
 	defaultDNS01CheckRetryPeriod = 10 * time.Second
+	defaultDNS01PropagationTime  = 60 * time.Second
 )
 
 var (
@@ -235,6 +237,7 @@ func NewControllerOptions() *ControllerOptions {
 		EnableCertificateOwnerRef:         defaultEnableCertificateOwnerRef,
 		MetricsListenAddress:              defaultPrometheusMetricsServerAddress,
 		DNS01CheckRetryPeriod:             defaultDNS01CheckRetryPeriod,
+		DNS01PropagationTime:              defaultDNS01PropagationTime,
 		EnablePprof:                       false,
 	}
 }
@@ -341,6 +344,9 @@ func (s *ControllerOptions) AddFlags(fs *pflag.FlagSet) {
 		"The maximum number of challenges that can be scheduled as 'processing' at once.")
 	fs.DurationVar(&s.DNS01CheckRetryPeriod, "dns01-check-retry-period", defaultDNS01CheckRetryPeriod, ""+
 		"The duration the controller should wait between checking if a ACME dns entry exists."+
+		"This should be a valid duration string, for example 180s or 1h")
+	fs.DurationVar(&s.DNS01PropagationTime, "dns01-propagation-time", defaultDNS01PropagationTime, ""+
+		"The duration the controller should wait after determining that an ACME dns entry exists."+
 		"This should be a valid duration string, for example 180s or 1h")
 
 	fs.StringVar(&s.MetricsListenAddress, "metrics-listen-address", defaultPrometheusMetricsServerAddress, ""+

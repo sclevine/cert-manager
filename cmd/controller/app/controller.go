@@ -330,6 +330,7 @@ func buildControllerContext(ctx context.Context, opts *options.ControllerOptions
 			DNS01Nameservers:                  nameservers,
 			AccountRegistry:                   acmeAccountRegistry,
 			DNS01CheckRetryPeriod:             opts.DNS01CheckRetryPeriod,
+			DNS01PropagationTime:              opts.DNS01PropagationTime,
 		},
 		IssuerOptions: controller.IssuerOptions{
 			ClusterIssuerAmbientCredentials: opts.ClusterIssuerAmbientCredentials,
