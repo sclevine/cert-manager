@@ -273,9 +273,11 @@ func (r *DNSProvider) getHostedZoneID(fqdn string) (string, error) {
 
 func newTXTRecordSet(fqdn, value string, ttl int) *route53.ResourceRecordSet {
 	return &route53.ResourceRecordSet{
-		Name: aws.String(fqdn),
-		Type: aws.String(route53.RRTypeTxt),
-		TTL:  aws.Int64(int64(ttl)),
+		Name:             aws.String(fqdn),
+		Type:             aws.String(route53.RRTypeTxt),
+		TTL:              aws.Int64(int64(ttl)),
+		MultiValueAnswer: aws.Bool(true),
+		SetIdentifier:    aws.String(value),
 		ResourceRecords: []*route53.ResourceRecord{
 			{Value: aws.String(value)},
 		},
